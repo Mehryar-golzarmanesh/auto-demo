@@ -8,6 +8,9 @@ import { fa } from '@payloadcms/translations/languages/fa'
 
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
+import { Brands } from './collections/Brands'
+import { Cars } from './collections/Cars'
+import { Inquiries } from './collections/Inquiries'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -19,7 +22,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media],
+  collections: [Users, Media, Brands, Cars, Inquiries],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
