@@ -4,6 +4,7 @@ import path from 'path'
 import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
 import sharp from 'sharp'
+import { fa } from '@payloadcms/translations/languages/fa'
 
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
@@ -31,4 +32,19 @@ export default buildConfig({
   }),
   sharp,
   plugins: [],
+  i18n: {
+    supportedLanguages: { fa },
+    fallbackLanguage: 'fa',
+  },
+  localization: {
+    locales: [
+      {
+        label: 'فارسی',
+        code: 'fa',
+        rtl: true,
+      },
+    ],
+    defaultLocale: 'fa',
+    fallback: true,
+  },
 })
