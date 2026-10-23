@@ -24,10 +24,20 @@ export default async function RelatedCars({ car }: { car: Car }) {
     sort: '-createdAt',
     // Same lean field list as the /cars page, because the card is the same component
     select: {
-      slug: true, brand: true, model: true, year: true, price: true, mileage: true,
-      transmission: true, fuelType: true, color: true, images: true, isFeatured: true, inspectionGrade: true,
+      slug: true,
+      brand: true,
+      model: true,
+      year: true,
+      price: true,
+      mileage: true,
+      transmission: true,
+      fuelType: true,
+      color: true,
+      images: true,
+      isFeatured: true,
+      inspectionGrade: true,
     },
-    populate: { brands: { name: true, slug: true }, media: { url: true, alt: true } },
+    populate: { brands: { name: true, slug: true } },
   })
 
   if (docs.length === 0) return null
@@ -37,11 +47,18 @@ export default async function RelatedCars({ car }: { car: Car }) {
       <div className="mx-auto flex max-w-[1440px] flex-col gap-8 px-5 lg:px-12">
         <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
           <div>
-            <span className="block text-[11px] font-bold uppercase tracking-widest text-[#f7ce97]">CURATED ALTERNATIVES</span>
-            <h2 id="related-title" className="text-2xl font-bold text-white">خودروهای مشابه در شوروم مرکزی</h2>
+            <span className="block text-[11px] font-bold uppercase tracking-widest text-[#f7ce97]">
+              CURATED ALTERNATIVES
+            </span>
+            <h2 id="related-title" className="text-2xl font-bold text-white">
+              خودروهای مشابه در شوروم مرکزی
+            </h2>
             <p className="mt-1 text-xs text-[#d2c4b6]">خودروهای هم‌رده موجود با ضمانت کارشناسی</p>
           </div>
-          <Link href="/cars" className="inline-flex items-center gap-1 text-sm font-semibold text-[#f7ce97] hover:underline">
+          <Link
+            href="/cars"
+            className="inline-flex items-center gap-1 text-sm font-semibold text-[#f7ce97] hover:underline"
+          >
             مشاهده کل نمایشگاه <ArrowLeftIcon size={16} aria-hidden />
           </Link>
         </div>
