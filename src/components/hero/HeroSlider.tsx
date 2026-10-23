@@ -203,7 +203,6 @@ export default function HeroSlider({ slides }: { slides: HeroSlide[] }) {
                         <span className="break-words text-xl font-bold text-[#f7ce97] sm:text-[28px]">
                           {slide.priceText}
                         </span>
-                        <span className="text-xs text-[#d2c4b6]">تومان</span>
                       </p>
                     </div>
                     <Link
