@@ -21,12 +21,22 @@ const nextConfig: NextConfig = {
         pathname: '/media/**',
       },
       {
-        protocol: 'https',
-        hostname: 'auto-demo-delta.vercel.app/',
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '3000',
         pathname: '/api/media/file/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'auto-demo-delta.vercel.app',
+        pathname: '/api/media/file/**',
+      },
+      {
+        protocol: 'https',
+        hostname: '**.public.blob.vercel-storage.com',
+        pathname: '/**',
+      },
     ],
-    unoptimized: true,
   },
   webpack: (webpackConfig) => {
     webpackConfig.resolve.extensionAlias = {

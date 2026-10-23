@@ -68,28 +68,46 @@ const TestDriveForm = ({ cars, defaultCarId }: Props) => {
       <div className="grid gap-4 md:grid-cols-3">
         {/* Name */}
         <div className="flex flex-col gap-1.5">
+          <label htmlFor="test-drive-name" className="sr-only">
+            نام و نام خانوادگی
+          </label>
           <Input
+            id="test-drive-name"
             {...register('name')}
             placeholder="نام و نام خانوادگی شما"
             autoComplete="name"
             aria-invalid={!!errors.name}
+            aria-describedby={errors.name ? 'test-drive-name-error' : undefined}
             className={fieldClass}
           />
-          {errors.name && <p className="text-xs text-red-400">{errors.name.message}</p>}
+          {errors.name && (
+            <p id="test-drive-name-error" className="text-xs text-red-400">
+              {errors.name.message}
+            </p>
+          )}
         </div>
 
         {/* Phone: setValueAs converts Persian digits before validation */}
         <div className="flex flex-col gap-1.5">
+          <label htmlFor="test-drive-phone" className="sr-only">
+            شماره تماس
+          </label>
           <Input
+            id="test-drive-phone"
             {...register('phone', { setValueAs: (v: string) => toEnglishDigits(v ?? '') })}
             placeholder="شماره تماس (مثال: 09123456789)"
             type="tel"
             inputMode="tel"
             autoComplete="tel"
             aria-invalid={!!errors.phone}
+            aria-describedby={errors.phone ? 'test-drive-phone-error' : undefined}
             className={fieldClass}
           />
-          {errors.phone && <p className="text-xs text-red-400">{errors.phone.message}</p>}
+          {errors.phone && (
+            <p id="test-drive-phone-error" className="text-xs text-red-400">
+              {errors.phone.message}
+            </p>
+          )}
         </div>
 
         {/* Car: a native <select> avoids the sizing and popup bugs of the custom Select */}
@@ -97,7 +115,9 @@ const TestDriveForm = ({ cars, defaultCarId }: Props) => {
           <div className="relative">
             <select
               {...register('carId')}
+              id="test-drive-car"
               aria-invalid={!!errors.carId}
+              aria-describedby={errors.carId ? 'test-drive-car-error' : undefined}
               className={`${fieldClass} w-full appearance-none pe-11 scheme-dark ${
                 carId ? 'text-[#dfe2eb]' : 'text-gray-500'
               }`}
@@ -114,7 +134,11 @@ const TestDriveForm = ({ cars, defaultCarId }: Props) => {
               className="pointer-events-none absolute  inset-e-4 top-1/2 -translate-y-1/2 text-gray-400"
             />
           </div>
-          {errors.carId && <p className="text-xs text-red-400">{errors.carId.message}</p>}
+          {errors.carId && (
+            <p id="test-drive-car-error" className="text-xs text-red-400">
+              {errors.carId.message}
+            </p>
+          )}
         </div>
       </div>
 

@@ -34,7 +34,7 @@ export default function HeroSlider({ slides }: { slides: HeroSlide[] }) {
   const [index, setIndex] = useState(0)
   const [playing, setPlaying] = useState(true) // the visitor's choice (or "reduce motion")
   const [hovered, setHovered] = useState(false) // a temporary pause while the mouse or keyboard is on the slider
-  const [seen, setSeen] = useState<number[]>([0, 1 % count]) // slides whose image is already loaded
+  const [seen, setSeen] = useState<number[]>([0]) // slides whose image is already loaded
   const startX = useRef<number | null>(null)
   const swiped = useRef(false)
 
@@ -49,7 +49,7 @@ export default function HeroSlider({ slides }: { slides: HeroSlide[] }) {
   // Load the NEXT slide's image ahead of time, so the crossfade never shows an empty frame.
   // Slides nobody has reached yet cost nothing.
   useEffect(() => {
-    setSeen((s) => [...new Set([...s, index, (index + 1) % count])])
+    setSeen((s) => (s.includes(index) ? s : [...s, index]))
   }, [index, count])
 
   return (

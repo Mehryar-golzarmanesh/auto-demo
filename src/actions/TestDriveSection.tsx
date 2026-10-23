@@ -17,6 +17,8 @@ const TestDriveSection = async ({ defaultCarId }: Props) => {
     depth: 1,
     limit: 100,
     sort: 'model',
+    select: { id: true, brand: true, model: true, year: true },
+    populate: { brands: { name: true } },
   })
 
   const cars = docs.map((car) => {
@@ -26,7 +28,11 @@ const TestDriveSection = async ({ defaultCarId }: Props) => {
 
   return (
     <div className="px-10 2xl:px-0 pb-10">
-      <section className="rounded-4xl bg-linear-to-br from-[#2a2e35] to-[#1c2026] p-6 md:p-10 max-w-7xl mx-auto mt-10">
+      <section
+        id="test-drive"
+        aria-labelledby="test-drive-title"
+        className="rounded-4xl bg-linear-to-br from-[#2a2e35] to-[#1c2026] p-6 md:p-10 max-w-7xl mx-auto mt-10"
+      >
         <div className="grid items-center gap-10 lg:grid-cols-[280px_1fr]">
           {/* Advisor: first in the DOM, so it sits on the right in RTL */}
           <div className="flex flex-col items-center gap-3 text-center">
@@ -49,7 +55,7 @@ const TestDriveSection = async ({ defaultCarId }: Props) => {
           <div className="flex flex-col gap-6">
             <div className="flex flex-col gap-3">
               <p className="text-xs text-gold">نوبت اختصاصی بدون معطلی</p>
-              <h2 className="text-2xl font-bold text-[#dfe2eb] md:text-4xl">
+              <h2 id="test-drive-title" className="text-2xl font-bold text-[#dfe2eb] md:text-4xl">
                 رزرو بازدید حضوری و تست درایو اختصاصی
               </h2>
               <p className="max-w-2xl text-sm leading-7 text-[#d2c4b6]">

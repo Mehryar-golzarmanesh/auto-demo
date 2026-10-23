@@ -1,5 +1,4 @@
 import { nav_links } from '@/data'
-import { Button } from './ui/button'
 import { toPersianNumbers } from '@/lib/utils'
 import { Phone } from 'lucide-react'
 import Link from 'next/link'
@@ -7,7 +6,7 @@ import BookingButton from './BookingButton'
 
 const NavBar = () => {
   return (
-    <nav className="bg-[#11141a]">
+    <nav aria-label="منوی اصلی" className="bg-[#11141a]">
       <div className="flex justify-between p-5 items-center border-b-[#1b1b1e] border-b-4 max-w-480 mx-auto">
         <div>
           <Link href={'/'}>
@@ -31,7 +30,9 @@ const NavBar = () => {
             {toPersianNumbers(9193463658)}
           </div>
           <BookingButton>
-            <Button className="min-h-full rounded-xl">درخواست نوبت بازدید</Button>
+            <span className="inline-flex min-h-11 items-center justify-center rounded-xl bg-[#f7ce97] px-4 py-2 font-medium text-[#432c03] transition-colors hover:bg-[#deb278]">
+              درخواست نوبت بازدید
+            </span>
           </BookingButton>
         </div>
       </div>

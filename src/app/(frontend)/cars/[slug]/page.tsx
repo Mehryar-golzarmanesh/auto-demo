@@ -51,7 +51,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   return {
     title: `${title} | دمو خودرو`,
-    description: car.description?.slice(0, 160) || `خرید ${title} با گزارش کارشناسی و ضمانت رسمی و امکان رزرو تست درایو.`,
+    description:
+      car.description?.slice(0, 160) ||
+      `خرید ${title} با گزارش کارشناسی و ضمانت رسمی و امکان رزرو تست درایو.`,
     openGraph: { title, images: image ? [image] : undefined },
   }
 }
@@ -69,7 +71,13 @@ export default async function CarPage({ params }: Props) {
   const photos: Photo[] = (car.images ?? []).flatMap((item) => {
     const media = typeof item.image === 'object' ? item.image : null
     if (!media?.url) return []
-    return [{ url: media.url, alt: media.alt || title, caption: (item as { caption?: string | null }).caption ?? '' }]
+    return [
+      {
+        url: media.url,
+        alt: media.alt || title,
+        caption: (item as { caption?: string | null }).caption ?? '',
+      },
+    ]
   })
 
   const badges = [
@@ -80,8 +88,12 @@ export default async function CarPage({ params }: Props) {
 
   const metrics = [
     { label: 'کارکرد واقعی', value: mileage === 0 ? '۰' : fa.format(mileage), unit: 'کیلومتر' },
-    car.specs?.acceleration ? { label: 'شتاب ۰-۱۰۰', value: fa.format(car.specs.acceleration), unit: 'ثانیه' } : null,
-    car.specs?.horsepower ? { label: 'قدرت موتور', value: fa.format(car.specs.horsepower), unit: 'اسب بخار' } : null,
+    car.specs?.acceleration
+      ? { label: 'شتاب ۰-۱۰۰', value: fa.format(car.specs.acceleration), unit: 'ثانیه' }
+      : null,
+    car.specs?.horsepower
+      ? { label: 'قدرت موتور', value: fa.format(car.specs.horsepower), unit: 'اسب بخار' }
+      : null,
   ].filter((m): m is { label: string; value: string; unit: string } => m !== null)
 
   // Structured data: helps Google show price and availability in search results
@@ -103,23 +115,37 @@ export default async function CarPage({ params }: Props) {
   }
 
   return (
-    <main className="pb-6">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }} />
+    <div className="pb-6">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }}
+      />
 
       {/* Breadcrumbs + quick actions */}
       <div className="mx-auto flex max-w-[1440px] flex-col justify-between gap-3 px-5 py-3 md:flex-row md:items-center lg:px-12">
-        <nav aria-label="راهنمای مسیر" className="flex flex-wrap items-center gap-2 text-xs text-[#d2c4b6]">
-          <Link href="/" className="hover:text-[#f7ce97]">صفحه اصلی</Link>
+        <nav
+          aria-label="راهنمای مسیر"
+          className="flex flex-wrap items-center gap-2 text-xs text-[#d2c4b6]"
+        >
+          <Link href="/" className="hover:text-[#f7ce97]">
+            صفحه اصلی
+          </Link>
           <span className="text-[#4e453b]">/</span>
-          <Link href="/cars" className="hover:text-[#f7ce97]">نمایشگاه خودروها</Link>
+          <Link href="/cars" className="hover:text-[#f7ce97]">
+            نمایشگاه خودروها
+          </Link>
           {brand && (
             <>
               <span className="text-[#4e453b]">/</span>
-              <Link href={`/cars?brand=${brand.slug}`} className="hover:text-[#f7ce97]">{brand.name}</Link>
+              <Link href={`/cars?brand=${brand.slug}`} className="hover:text-[#f7ce97]">
+                {brand.name}
+              </Link>
             </>
           )}
           <span className="text-[#4e453b]">/</span>
-          <span className="font-medium text-[#f7ce97]">{car.model} {car.year}</span>
+          <span className="font-medium text-[#f7ce97]">
+            {car.model} {car.year}
+          </span>
         </nav>
         <ActionBar slug={car.slug} title={title} />
       </div>
@@ -128,7 +154,9 @@ export default async function CarPage({ params }: Props) {
       <header className="mx-auto flex max-w-[1440px] flex-col justify-between gap-6 px-5 pb-4 pt-6 lg:flex-row lg:items-end lg:px-12">
         <div className="flex flex-col gap-3">
           <h1 className="text-3xl font-bold tracking-tight text-[#dfe2eb] lg:text-4xl">{title}</h1>
-          {car.description && <p className="max-w-4xl text-sm leading-7 text-[#d2c4b6]">{car.description}</p>}
+          {car.description && (
+            <p className="max-w-4xl text-sm leading-7 text-[#d2c4b6]">{car.description}</p>
+          )}
         </div>
 
         {metrics.length > 0 && (
@@ -174,6 +202,6 @@ export default async function CarPage({ params }: Props) {
       <Suspense fallback={<div className="mt-12 h-96" aria-hidden />}>
         <RelatedCars car={car} />
       </Suspense>
-    </main>
+    </div>
   )
 }

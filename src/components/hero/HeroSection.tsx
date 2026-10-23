@@ -41,7 +41,10 @@ export default async function HeroSection() {
   const slides = cars.map(toSlide)
 
   return (
-    <section id="hero" className="relative w-full overflow-hidden border-b border-[#4e453b]/30 bg-[#0a0e14] pb-14 pt-8 lg:pt-12">
+    <section
+      id="hero"
+      className="relative w-full overflow-hidden border-b border-[#4e453b]/30 bg-[#0a0e14] pb-14 pt-8 lg:pt-8"
+    >
       {/* Soft golden glows. Plain gradients look the same as huge blurred circles but cost far less to paint. */}
       <div
         aria-hidden
@@ -50,13 +53,15 @@ export default async function HeroSection() {
 
       <div className="relative z-20 mx-auto max-w-[1440px] px-5 lg:px-12">
         {/* Heading */}
-        <div className="mx-auto mb-8 flex max-w-4xl flex-col items-center text-center">
-          <div className="mb-4 inline-flex flex-wrap items-center justify-center gap-2 rounded-full border border-[#f7ce97]/30 bg-[#262a31]/90 px-4 py-1.5 text-[#f7ce97] shadow-[0_4px_20px_rgba(217,179,126,0.15)]">
+        <div className="mx-auto mb-4 flex max-w-4xl flex-col items-center text-center">
+          {/* <div className="mb-4 inline-flex flex-wrap items-center justify-center gap-2 rounded-full border border-[#f7ce97]/30 bg-[#262a31]/90 px-4 py-1.5 text-[#f7ce97] shadow-[0_4px_20px_rgba(217,179,126,0.15)]">
             <span aria-hidden className="h-2 w-2 animate-pulse rounded-full bg-[#f7ce97]" />
             <span className="text-[11px] font-bold tracking-wider">{COPY.badgeMain}</span>
-            <span aria-hidden className="text-[#4e453b]">|</span>
+            <span aria-hidden className="text-[#4e453b]">
+              |
+            </span>
             <span className="text-[10px] font-medium text-[#d2c4b6]">{COPY.badgeSub}</span>
-          </div>
+          </div> */}
 
           <h1 className="mb-4 text-[34px] font-bold leading-tight tracking-tight text-[#dfe2eb] sm:text-[46px] lg:text-[58px]">
             {COPY.titleStart}{' '}
@@ -66,7 +71,9 @@ export default async function HeroSection() {
             {COPY.titleEnd}
           </h1>
 
-          <p className="max-w-2xl text-[15px] leading-relaxed text-[#d2c4b6] sm:text-lg">{COPY.text}</p>
+          {/* <p className="max-w-2xl text-[15px] leading-relaxed text-[#d2c4b6] sm:text-lg">
+            {COPY.text}
+          </p> */}
         </div>
 
         {/* The slider with the top cars */}
@@ -85,7 +92,8 @@ export default async function HeroSection() {
               href={SECONDARY_HREF}
               className="flex flex-1 items-center justify-center gap-2 rounded-xl border border-[#4e453b]/40 bg-[#262a31]/80 px-6 py-4 font-medium text-[#dfe2eb] transition-colors hover:bg-[#31353c] sm:flex-initial"
             >
-              <ShieldCheckIcon size={20} className="text-[#f7ce97]" aria-hidden /> {COPY.secondaryCta}
+              <ShieldCheckIcon size={20} className="text-[#f7ce97]" aria-hidden />{' '}
+              {COPY.secondaryCta}
             </a>
           </div>
 
@@ -103,7 +111,14 @@ export default async function HeroSection() {
         </div>
 
         {/* Quick search */}
-        <Suspense fallback={<div aria-hidden className="mt-6 h-32 animate-pulse rounded-2xl bg-[#262a31]/60" />}>
+        <Suspense
+          fallback={
+            <div
+              aria-hidden
+              className="mt-6 h-80 animate-pulse rounded-2xl bg-[#262a31]/60 sm:h-64 lg:h-32"
+            />
+          }
+        >
           <SearchLoader facets={facets} />
         </Suspense>
       </div>

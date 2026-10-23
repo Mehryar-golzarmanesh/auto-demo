@@ -8,6 +8,7 @@ import HeroThree from './components/hero-3'
 import HeroFour from './components/hero-4'
 import TestDriveSection from '@/actions/TestDriveSection'
 import HeroSection from '@/components/hero/HeroSection'
+import Image from 'next/image'
 
 const images = [
   '/cars/bmw/bmw-series-3/bmw-series-3-blue.jpg',
@@ -68,8 +69,16 @@ export default async function HomePage({
       </div> */}
       <HeroSection />
       {/* انتخاب هوشمند */}
-      <div className="flex flex-col gap-5 bg-[#10141a] p-10 w-full">
-        <div className="max-w-7xl mx-auto w-full flex flex-col gap-5">
+      <div className="relative isolate flex w-full flex-col gap-5 overflow-hidden bg-[#10141a] p-10">
+        <Image
+          src="/car-bg.webp"
+          fill
+          sizes="100vw"
+          alt=""
+          className="object-cover object-center"
+        />
+        <div className="absolute inset-0 bg-[#10141a]/45 shadow-inner" />
+        <div className="relative z-10 mx-auto flex w-full max-w-7xl flex-col gap-5">
           <div className="flex justify-between items-center">
             <div className="flex flex-col gap-1">
               <p className="text-xs text-gold">ویترین کمپانی</p>

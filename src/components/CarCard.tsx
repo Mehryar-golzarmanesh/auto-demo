@@ -2,7 +2,6 @@ import type { Car } from '@/payload-types'
 import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowLeftIcon } from 'lucide-react'
-import { Button } from './ui/button'
 import { toPersianPrice } from '@/lib/utils'
 
 interface Props {
@@ -43,7 +42,6 @@ const CarCard = ({ car }: Props) => {
         <Link href={`/cars/${car.slug}`}>
           {image?.url ? (
             <Image
-              unoptimized
               src={image.url}
               alt={image.alt || `${brand?.name ?? ''} ${car.model}`}
               fill
@@ -110,10 +108,11 @@ const CarCard = ({ car }: Props) => {
               {toPersianPrice(car.price)} <span className="text-xs text-[#d2c4b6]">تومان</span>
             </p>
           </div>
-          <Link href={`/cars/${car.slug}`}>
-            <Button variant="secondary" className={`cursor-pointer`}>
-              مشخصات <ArrowLeftIcon size={15} />
-            </Button>
+          <Link
+            href={`/cars/${car.slug}`}
+            className="inline-flex items-center justify-center gap-1.5 rounded-lg bg-[#20252b] px-2.5 py-1.5 text-sm font-medium text-[#dfe2eb] transition-colors hover:bg-[#31353c]"
+          >
+            مشخصات <ArrowLeftIcon size={15} />
           </Link>
         </div>
       </div>
