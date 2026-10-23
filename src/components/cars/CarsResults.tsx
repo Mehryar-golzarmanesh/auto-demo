@@ -36,7 +36,6 @@ export default async function CarsResults({ filters }: { filters: CarFilters }) 
     },
     populate: {
       brands: { name: true, slug: true },
-      media: { url: true, alt: true },
     },
   })
 
@@ -44,7 +43,10 @@ export default async function CarsResults({ filters }: { filters: CarFilters }) 
     return (
       <div className="rounded-2xl bg-[#181c22] p-10 text-center">
         <p className="text-[#dfe2eb]">خودرویی با این فیلترها پیدا نشد.</p>
-        <Link href={CARS_PATH} className="mt-4 inline-block rounded-lg bg-[#f7ce97] px-5 py-2.5 text-sm font-bold text-[#432c03]">
+        <Link
+          href={CARS_PATH}
+          className="mt-4 inline-block rounded-lg bg-[#f7ce97] px-5 py-2.5 text-sm font-bold text-[#432c03]"
+        >
           حذف فیلترها
         </Link>
       </div>
