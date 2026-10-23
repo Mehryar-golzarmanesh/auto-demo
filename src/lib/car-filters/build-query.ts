@@ -1,5 +1,11 @@
 import type { Where } from 'payload'
-import { YEAR_GROUPS, toEnglishDigits, toPersianDigits, type CarFilters, type YearKey } from './schema'
+import {
+  YEAR_GROUPS,
+  toEnglishDigits,
+  toPersianDigits,
+  type CarFilters,
+  type YearKey,
+} from './schema'
 
 const yearGroupWhere = (key: YearKey): Where => {
   // "Before 1400 / 2022": Jalali years are ~1000-1400, Gregorian ~1900-2021.
@@ -21,11 +27,14 @@ const searchTokenWhere = (token: string): Where => {
   const english = toEnglishDigits(token)
   const variants = [...new Set([token, english, toPersianDigits(english)])]
 
-  const or: Where[] = variants.flatMap((v) => [
-    { model: { like: v } },
-    { color: { like: v } },
-    { 'brand.name': { like: v } }, // dot notation searches inside the related brand
-  ])
+  const or: Where[] = []
+  for (const variant of variants) {
+    or.push(
+      { model: { like: variant } },
+      { color: { like: variant } },
+      { 'brand.name': { like: variant } }, // dot notation searches inside the related brand
+    )
+  }
 
   // `year` is a number field, so `like` can't search it. A 4-digit word is matched as a year instead.
   // 2023 also matches 1402 (the same year in the other calendar), exactly like the sidebar's year groups.
