@@ -112,6 +112,9 @@ const TestDriveForm = ({ cars, defaultCarId }: Props) => {
 
         {/* Car: a native <select> avoids the sizing and popup bugs of the custom Select */}
         <div className="flex flex-col gap-1.5">
+          <label htmlFor="test-drive-car" className="sr-only">
+            خودروی مورد نظر
+          </label>
           <div className="relative">
             <select
               {...register('carId')}
@@ -119,7 +122,7 @@ const TestDriveForm = ({ cars, defaultCarId }: Props) => {
               aria-invalid={!!errors.carId}
               aria-describedby={errors.carId ? 'test-drive-car-error' : undefined}
               className={`${fieldClass} w-full appearance-none pe-11 scheme-dark ${
-                carId ? 'text-[#dfe2eb]' : 'text-gray-500'
+                carId ? 'text-[#dfe2eb]' : 'text-[#d2c4b6]'
               }`}
             >
               <option value="">خودروی مورد نظر</option>

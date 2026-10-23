@@ -21,7 +21,7 @@ const HeroFour = () => {
               <CheckCheck className="text-gold" size={30} />
             </div>
             <p className="text-gold text-xs">استاندارد بازرسی ۲۱۰ آیتمی</p>
-            <h4 className="font-bold text-[#dfe2eb]">کارشناسی تخصصی رنگ، بدنه و دیاگ</h4>
+            <h3 className="font-bold text-[#dfe2eb]">کارشناسی تخصصی رنگ، بدنه و دیاگ</h3>
             <p className="text-xs text-[#d2c4b6] leading-6">
               تمامی خودروها قبل از ورود به نمایشگاه توسط مهندسین مجرب با پیشرفته‌ترین دستگاه‌های
               ضخامت‌سنج دیجیتال و دیاگ اختصاصی بررسی شده و برگه ضمانت کتبی بدون ابهام صادر می‌شود.
@@ -32,7 +32,7 @@ const HeroFour = () => {
               <Medal className="text-gold" size={30} />
             </div>
             <p className="text-gold text-xs">تضمین بازگشت وجه</p>
-            <h4 className="font-bold text-[#dfe2eb]">گارانتی طلایی و استرداد ۴۸ ساعته</h4>
+            <h3 className="font-bold text-[#dfe2eb]">گارانتی طلایی و استرداد ۴۸ ساعته</h3>
             <p className="text-xs text-[#d2c4b6] leading-6">
               در صورت وجود هرگونه مغایرت فنی یا بدنه با برگه کارشناسی ارائه شده توسط مجموعه دمو
               خودرو، تا ۴۸ ساعت امکان عودت کامل خودرو و استرداد بی‌قید و شرط کل مبلغ معامله فراهم
@@ -44,7 +44,7 @@ const HeroFour = () => {
               <Wallet className="text-gold" size={30} />
             </div>
             <p className="text-gold text-xs">انعطاف در پرداخت</p>
-            <h4 className="font-bold text-[#dfe2eb]">تسهیلات اقساطی منعطف و تهاتر ملک</h4>
+            <h3 className="font-bold text-[#dfe2eb]">تسهیلات اقساطی منعطف و تهاتر ملک</h3>
             <p className="text-xs text-[#d2c4b6] leading-6">
               امکان خرید اقساطی برای انواع خودروهای لوکس و تولید داخل با چک صیادی و اقساط ۶ الی ۳۶
               ماهه بدون نیاز به ضامن، همراه با امکان تهاتر با املاک ارزنده در مناطق ۱ تا ۳ تهران.

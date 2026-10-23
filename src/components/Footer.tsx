@@ -1,4 +1,3 @@
-import Image from 'next/image'
 import Link from 'next/link'
 import { ClockIcon, MapPinIcon, PhoneIcon } from 'lucide-react'
 
@@ -7,7 +6,6 @@ const BRAND = {
   nameFa: 'دمو خودرو',
   nameEn: 'Demo Khodro',
   group: 'DEMO AUTOMOTIVE GROUP',
-  logoSrc: '/logo.png', // put your logo in the /public folder
   description:
     'تجربه خریدی مطمئن، از خودروهای روز دنیا تا تولیدات ملی با ضمانت‌های رسمی و خدمات VIP دمو خودرو در لوکس‌ترین شوروم خاورمیانه.',
   badges: ['عضو رسمی اتحادیه صنف', 'ضمانت اصالت و سلامت شاسی'],
@@ -67,13 +65,7 @@ const Footer = () => {
           {/* Brand */}
           <div className="flex flex-col gap-4 sm:col-span-2 lg:col-span-1">
             <div className="flex flex-col gap-2">
-              <Image
-                src={BRAND.logoSrc}
-                alt={`لوگوی ${BRAND.nameFa}`}
-                width={160}
-                height={40}
-                className="h-10 w-auto self-start object-contain"
-              />
+              <span className="self-start text-2xl font-bold text-gold">{BRAND.nameFa}</span>
               <p
                 dir="ltr"
                 className="self-start text-[11px] font-semibold tracking-widest text-[#d2c4b6]"
@@ -133,7 +125,7 @@ const Footer = () => {
         </div>
 
         {/* Bottom bar */}
-        <div className="mt-12 flex flex-col gap-3 border-t border-[#1c2026] pt-6 text-xs text-gray-500 md:flex-row md:items-center md:justify-between">
+        <div className="mt-12 flex flex-col gap-3 border-t border-[#1c2026] pt-6 text-xs text-gray-400 md:flex-row md:items-center md:justify-between">
           <p>
             تمامی حقوق مادی و معنوی برای {BRAND.nameFa} ({BRAND.nameEn}) محفوظ است © {year}
           </p>

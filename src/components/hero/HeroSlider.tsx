@@ -144,7 +144,7 @@ export default function HeroSlider({ slides }: { slides: HeroSlide[] }) {
                     alt={slide.imageAlt}
                     fill
                     priority={i === 0} // the first slide is the biggest thing on the page: load it first
-                    sizes="(min-width: 1440px) 1280px, 100vw"
+                    sizes="(min-width: 1536px) 1280px, (min-width: 1024px) calc(100vw - 6rem), calc(100vw - 2.5rem)"
                     className="object-cover"
                   />
                 ) : (
@@ -211,23 +211,21 @@ export default function HeroSlider({ slides }: { slides: HeroSlide[] }) {
               </div>
 
               {/* Key numbers */}
-              <dl className="mt-4 grid grid-cols-2 gap-3 border-t border-[#4e453b]/20 pt-4 sm:grid-cols-4">
+              <ul className="mt-4 grid grid-cols-2 gap-3 border-t border-[#4e453b]/20 pt-4 sm:grid-cols-4">
                 {slide.metrics.map((metric) => {
                   const Icon = ICONS[metric.icon]
                   return (
-                    <div
+                    <li
                       key={metric.label}
-                      className="flex items-center gap-3 rounded-xl border border-[#4e453b]/20 bg-[#0a0e14]/60 p-3"
+                      className="grid grid-cols-[auto_1fr] grid-rows-[auto_auto] items-center gap-x-3 rounded-xl border border-[#4e453b]/20 bg-[#0a0e14]/60 p-3"
                     >
-                      <Icon size={24} className="shrink-0 text-[#f7ce97]" aria-hidden />
-                      <div className="flex flex-col">
-                        <dt className="text-[11px] text-[#d2c4b6]">{metric.label}</dt>
-                        <dd className="text-sm font-bold text-[#dfe2eb]">{metric.value}</dd>
-                      </div>
-                    </div>
+                      <Icon size={24} className="row-span-2 text-[#f7ce97]" aria-hidden />
+                      <span className="text-[11px] text-[#d2c4b6]">{metric.label}</span>
+                      <span className="text-sm font-bold text-[#dfe2eb]">{metric.value}</span>
+                    </li>
                   )
                 })}
-              </dl>
+              </ul>
             </div>
           )
         })}

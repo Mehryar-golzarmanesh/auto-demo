@@ -39,10 +39,10 @@ const CarCard = ({ car }: Props) => {
     <article className="flex flex-col overflow-hidden rounded-2xl bg-[#181b20]">
       {/* Image */}
       <div className="relative aspect-16/10 w-full bg-[#1f2329]">
-        <Link href={`/cars/${car.slug}`}>
+        <Link href={`/cars/${car.slug}`} className="relative block h-full w-full">
           {image?.url ? (
             <Image
-              src={image.url}
+              src={image.sizes?.thumbnail?.url ?? image.url}
               alt={image.alt || `${brand?.name ?? ''} ${car.model}`}
               fill
               sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"

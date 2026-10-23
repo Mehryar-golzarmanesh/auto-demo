@@ -9,6 +9,7 @@ import HeroFour from './components/hero-4'
 import TestDriveSection from '@/actions/TestDriveSection'
 import HeroSection from '@/components/hero/HeroSection'
 import Image from 'next/image'
+import { Suspense } from 'react'
 
 const images = [
   '/cars/bmw/bmw-series-3/bmw-series-3-blue.jpg',
@@ -19,9 +20,9 @@ const images = [
 export default async function HomePage({
   searchParams,
 }: {
-  searchParams: Promise<{ category?: string }>
+  searchParams: Promise<{ category?: string; book?: string }>
 }) {
-  const { category } = await searchParams
+  const { category, book } = await searchParams
   return (
     <div className="min-h-screen">
       {/* <div className="grid grid-cols-1 xl:grid-cols-2 gap-10 xl:gap-10 p-10 max-w-7xl mx-auto">
@@ -43,17 +44,18 @@ export default async function HomePage({
               <Button>
                 مشاهده موجودی روز <ArrowLeft />
               </Button>
-              <Button variant={'secondary'}>
-                <ShieldCheckIcon className="text-primary" size={60} /> درخواست کارشناسی و تست درایو
-              </Button>
-            </div>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-3 md:justify-between mt-5 bg-[#13171d] p-5 rounded-xl w-full lg:w-fit gap-40">
-            <div className="flex flex-col gap-1">
-              <p className="text-gold text-sm font-bold">{toPersianNumbers('4,800')}</p>
-              <p className="text-xs">معامله موفق VIP</p>
-            </div>
-            <div className="flex flex-col gap-1">
+      <div id="test-drive">
+        <Suspense
+          fallback={
+            <div
+              aria-hidden
+              className="mx-10 mt-10 h-[520px] animate-pulse rounded-3xl bg-[#181c22]"
+            />
+          }
+        >
+          <TestDriveSection eagerBooking={book === '1'} />
+        </Suspense>
+      </div>
               <p className="text-gold text-sm font-bold">{toPersianNumbers(100)}%</p>
               <p className="text-xs">تضمین اصالت شاسی</p>
             </div>
@@ -88,12 +90,46 @@ export default async function HomePage({
               مشاهده تمامی برند ها <ArrowLeftIcon size={15} />
             </Link>
           </div>
-          <BrandRectangle />
+          <Suspense
+            fallback={
+              <div aria-hidden className="grid grid-cols-2 gap-4 md:grid-cols-4 lg:grid-cols-8">
+                {Array.from({ length: 8 }, (_, index) => (
+                  <div key={index} className="h-28 animate-pulse rounded-xl bg-[#1c2026]" />
+                ))}
+              </div>
+            }
+          >
+            <BrandRectangle />
+          </Suspense>
         </div>
       </div>
-      <HeroThree category={category} />
+      <Suspense
+        fallback={
+          <div aria-hidden className="mx-auto grid max-w-7xl grid-cols-1 gap-5 p-10 lg:grid-cols-3">
+            {Array.from({ length: 6 }, (_, index) => (
+              <div key={index} className="overflow-hidden rounded-xl bg-[#181c22]">
+                <div className="aspect-[16/10] animate-pulse bg-[#31353c]" />
+                <div className="h-40 animate-pulse p-5" />
+              </div>
+            ))}
+          </div>
+        }
+      >
+        <HeroThree category={category} />
+      </Suspense>
       <HeroFour />
-      <TestDriveSection />
+      <div id="test-drive">
+        <Suspense
+          fallback={
+            <div
+              aria-hidden
+              className="mx-10 mt-10 h-[520px] animate-pulse rounded-3xl bg-[#181c22]"
+            />
+          }
+        >
+          <TestDriveSection />
+        </Suspense>
+      </div>
     </div>
   )
 }

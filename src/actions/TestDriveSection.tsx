@@ -1,13 +1,14 @@
 import Image from 'next/image'
 import { getPayload } from 'payload'
 import config from '@payload-config'
-import TestDriveForm from './TestDriveForm'
+import DeferredTestDriveForm from './DeferredTestDriveForm'
 
 interface Props {
   defaultCarId?: number
+  eagerBooking?: boolean
 }
 
-const TestDriveSection = async ({ defaultCarId }: Props) => {
+const TestDriveSection = async ({ defaultCarId, eagerBooking }: Props) => {
   const payload = await getPayload({ config })
 
   // depth: 1 so `car.brand` is a populated object we can read `.name` from
@@ -29,7 +30,6 @@ const TestDriveSection = async ({ defaultCarId }: Props) => {
   return (
     <div className="px-10 2xl:px-0 pb-10">
       <section
-        id="test-drive"
         aria-labelledby="test-drive-title"
         className="rounded-4xl bg-linear-to-br from-[#2a2e35] to-[#1c2026] p-6 md:p-10 max-w-7xl mx-auto mt-10"
       >
@@ -64,7 +64,7 @@ const TestDriveSection = async ({ defaultCarId }: Props) => {
               </p>
             </div>
 
-            <TestDriveForm cars={cars} defaultCarId={defaultCarId} />
+            <DeferredTestDriveForm cars={cars} defaultCarId={defaultCarId} eager={eagerBooking} />
           </div>
         </div>
       </section>

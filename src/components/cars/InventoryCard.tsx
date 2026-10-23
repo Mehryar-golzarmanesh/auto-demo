@@ -5,7 +5,19 @@ import { toPersianPrice } from '@/lib/utils'
 
 type CardCar = Pick<
   Car,
-  'id' | 'slug' | 'brand' | 'model' | 'year' | 'price' | 'mileage' | 'transmission' | 'fuelType' | 'color' | 'images' | 'isFeatured' | 'inspectionGrade'
+  | 'id'
+  | 'slug'
+  | 'brand'
+  | 'model'
+  | 'year'
+  | 'price'
+  | 'mileage'
+  | 'transmission'
+  | 'fuelType'
+  | 'color'
+  | 'images'
+  | 'isFeatured'
+  | 'inspectionGrade'
 >
 
 const transmissionLabels = { manual: 'دنده‌ای', automatic: 'اتوماتیک' } as const
@@ -13,7 +25,13 @@ const fuelLabels = { petrol: 'بنزین', diesel: 'دیزل', hybrid: 'هیبر
 const fa = new Intl.NumberFormat('fa-IR')
 
 // A plain server component: no state, no client JavaScript shipped for it.
-export default function InventoryCard({ car, priority = false }: { car: CardCar; priority?: boolean }) {
+export default function InventoryCard({
+  car,
+  priority = false,
+}: {
+  car: CardCar
+  priority?: boolean
+}) {
   const brand = typeof car.brand === 'object' ? car.brand : null
   const firstImage = car.images?.[0]?.image
   const image = typeof firstImage === 'object' ? firstImage : null
@@ -32,7 +50,7 @@ export default function InventoryCard({ car, priority = false }: { car: CardCar;
         >
           {image?.url ? (
             <Image
-              src={image.url}
+              src={image.sizes?.thumbnail?.url ?? image.url}
               alt={image.alt || title}
               fill
               priority={priority} // only the first row is preloaded; the rest lazy-load
@@ -40,16 +58,26 @@ export default function InventoryCard({ car, priority = false }: { car: CardCar;
               className="object-cover transition-transform duration-500 group-hover:scale-105"
             />
           ) : (
-            <div className="flex h-full items-center justify-center text-sm text-[#d2c4b6]">تصویری ثبت نشده</div>
+            <div className="flex h-full items-center justify-center text-sm text-[#d2c4b6]">
+              تصویری ثبت نشده
+            </div>
           )}
 
           <div className="absolute end-2.5 top-2.5 z-10 flex flex-wrap gap-1.5">
             {car.inspectionGrade === 'a-plus' && (
-              <span className="rounded-full bg-[#f7ce97] px-2.5 py-0.5 text-[11px] font-bold text-[#432c03]">تاییدیه کارشناسی A+</span>
+              <span className="rounded-full bg-[#f7ce97] px-2.5 py-0.5 text-[11px] font-bold text-[#432c03]">
+                تاییدیه کارشناسی A+
+              </span>
             )}
-            {mileage === 0 && <span className="rounded-full bg-[#0a0e14]/90 px-2.5 py-0.5 text-[11px] text-[#fccd91]">صفر کیلومتر</span>}
+            {mileage === 0 && (
+              <span className="rounded-full bg-[#0a0e14]/90 px-2.5 py-0.5 text-[11px] text-[#fccd91]">
+                صفر کیلومتر
+              </span>
+            )}
           </div>
-          <span className="absolute bottom-2 start-2 z-10 rounded-md bg-[#0a0e14]/90 px-2 py-0.5 text-[11px] text-[#dfe2eb]">{car.year}</span>
+          <span className="absolute bottom-2 start-2 z-10 rounded-md bg-[#0a0e14]/90 px-2 py-0.5 text-[11px] text-[#dfe2eb]">
+            {car.year}
+          </span>
         </Link>
 
         <div className="p-5">
@@ -58,7 +86,10 @@ export default function InventoryCard({ car, priority = false }: { car: CardCar;
             <span className="text-[#fccd91]">{car.color}</span>
           </div>
           <h3 className="font-bold">
-            <Link href={`/cars/${car.slug}`} className="text-[#dfe2eb] transition-colors hover:text-[#f7ce97] group-hover:text-[#f7ce97]">
+            <Link
+              href={`/cars/${car.slug}`}
+              className="text-[#dfe2eb] transition-colors hover:text-[#f7ce97] group-hover:text-[#f7ce97]"
+            >
               {title}
             </Link>
           </h3>
@@ -66,22 +97,30 @@ export default function InventoryCard({ car, priority = false }: { car: CardCar;
           <div className="mt-3 grid grid-cols-3 gap-1 rounded-lg bg-[#1c2026]/60 p-2 text-center">
             <div>
               <span className="block text-[10px] text-[#d2c4b6]">کارکرد</span>
-              <span className="text-xs font-semibold text-[#dfe2eb]">{mileage === 0 ? '۰' : fa.format(mileage)} KM</span>
+              <span className="text-xs font-semibold text-[#dfe2eb]">
+                {mileage === 0 ? '۰' : fa.format(mileage)} KM
+              </span>
             </div>
             <div className="border-x border-[#4e453b]/20">
               <span className="block text-[10px] text-[#d2c4b6]">گیربکس</span>
-              <span className="text-xs font-semibold text-[#dfe2eb]">{car.transmission ? transmissionLabels[car.transmission] : '—'}</span>
+              <span className="text-xs font-semibold text-[#dfe2eb]">
+                {car.transmission ? transmissionLabels[car.transmission] : '—'}
+              </span>
             </div>
             <div>
               <span className="block text-[10px] text-[#d2c4b6]">سوخت</span>
-              <span className="text-xs font-semibold text-[#dfe2eb]">{car.fuelType ? fuelLabels[car.fuelType] : '—'}</span>
+              <span className="text-xs font-semibold text-[#dfe2eb]">
+                {car.fuelType ? fuelLabels[car.fuelType] : '—'}
+              </span>
             </div>
           </div>
 
           <div className="mt-4">
             <span className="text-[11px] text-[#d2c4b6]">قیمت کارشناسی شده:</span>
             <p className="mt-0.5 flex items-baseline gap-1">
-              <span className="text-[22px] font-extrabold tracking-tight text-[#f7ce97]">{toPersianPrice(car.price)}</span>
+              <span className="text-[22px] font-extrabold tracking-tight text-[#f7ce97]">
+                {toPersianPrice(car.price)}
+              </span>
               <span className="text-xs text-[#d2c4b6]">تومان</span>
             </p>
           </div>
@@ -89,10 +128,16 @@ export default function InventoryCard({ car, priority = false }: { car: CardCar;
       </div>
 
       <div className="mt-2 grid grid-cols-2 gap-2 p-5 pt-0">
-        <Link href={`/cars/${car.slug}`} className="rounded-lg bg-[#f7ce97] py-2.5 text-center text-xs font-bold text-[#432c03] transition-colors hover:bg-[#fccd91]">
+        <Link
+          href={`/cars/${car.slug}`}
+          className="rounded-lg bg-[#f7ce97] py-2.5 text-center text-xs font-bold text-[#432c03] transition-colors hover:bg-[#fccd91]"
+        >
           مشاهده کارشناسی
         </Link>
-        <Link href={`/cars/${car.slug}#test-drive`} className="rounded-lg bg-[#31353c] py-2.5 text-center text-xs font-semibold text-[#dfe2eb] transition-colors hover:bg-[#262a31]">
+        <Link
+          href={`/cars/${car.slug}#test-drive`}
+          className="rounded-lg bg-[#31353c] py-2.5 text-center text-xs font-semibold text-[#dfe2eb] transition-colors hover:bg-[#262a31]"
+        >
           رزرو نوبت بازدید
         </Link>
       </div>

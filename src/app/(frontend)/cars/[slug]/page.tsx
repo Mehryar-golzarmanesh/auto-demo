@@ -73,7 +73,7 @@ export default async function CarPage({ params }: Props) {
     if (!media?.url) return []
     return [
       {
-        url: media.url,
+        url: media.sizes?.hero?.url ?? media.url,
         alt: media.alt || title,
         caption: (item as { caption?: string | null }).caption ?? '',
       },
@@ -164,13 +164,11 @@ export default async function CarPage({ params }: Props) {
             {metrics.map((metric, i) => (
               <div key={metric.label} className="flex items-center gap-5">
                 {i > 0 && <span aria-hidden className="h-8 w-px bg-[#31353c]" />}
-                <div>
-                  <dt className="text-[11px] text-[#d2c4b6]">{metric.label}</dt>
-                  <dd>
-                    <span className="text-xl font-bold text-[#f7ce97]">{metric.value}</span>
-                    <span className="ms-1 text-xs text-[#d2c4b6]">{metric.unit}</span>
-                  </dd>
-                </div>
+                <dt className="text-[11px] text-[#d2c4b6]">{metric.label}</dt>
+                <dd>
+                  <span className="text-xl font-bold text-[#f7ce97]">{metric.value}</span>
+                  <span className="ms-1 text-xs text-[#d2c4b6]">{metric.unit}</span>
+                </dd>
               </div>
             ))}
           </dl>

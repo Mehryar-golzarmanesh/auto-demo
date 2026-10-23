@@ -35,10 +35,14 @@ async function SearchLoader({ facets }: { facets: Promise<Facets> }) {
   return <HeroSearch brands={brands.map(({ slug, name }) => ({ slug, name }))} total={total} />
 }
 
+async function HeroSlides({ cars }: { cars: ReturnType<typeof getHeroCars> }) {
+  const slides = (await cars).map(toSlide)
+  return slides.length > 0 ? <HeroSlider slides={slides} /> : null
+}
+
 export default async function HeroSection() {
   const facets = getFacets() // start now, don't wait yet
-  const cars = await getHeroCars(3)
-  const slides = cars.map(toSlide)
+  const cars = getHeroCars(3)
 
   return (
     <section
@@ -77,7 +81,24 @@ export default async function HeroSection() {
         </div>
 
         {/* The slider with the top cars */}
-        {slides.length > 0 && <HeroSlider slides={slides} />}
+        <Suspense
+          fallback={
+            <div
+              aria-hidden
+              className="rounded-3xl border border-[#4e453b]/30 bg-[#181c22]/60 p-4 sm:p-6 lg:p-8"
+            >
+              <div className="mb-4 h-8 w-1/3 animate-pulse rounded-lg bg-[#262a31]" />
+              <div className="aspect-[16/9] animate-pulse rounded-2xl bg-[#262a31] sm:aspect-[21/9]" />
+              <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
+                {Array.from({ length: 4 }, (_, index) => (
+                  <div key={index} className="h-16 animate-pulse rounded-xl bg-[#262a31]" />
+                ))}
+              </div>
+            </div>
+          }
+        >
+          <HeroSlides cars={cars} />
+        </Suspense>
 
         {/* Buttons and numbers */}
         <div className="mt-8 flex flex-col items-center justify-between gap-6 pb-4 lg:flex-row">
@@ -99,12 +120,12 @@ export default async function HeroSection() {
 
           <dl className="flex items-center gap-6 text-right">
             {STATS.map((stat, i) => (
-              <div key={stat.label} className="flex items-center gap-6">
-                {i > 0 && <span aria-hidden className="h-8 w-px bg-[#4e453b]/30" />}
-                <div className="flex flex-col">
-                  <dd className="text-lg font-bold text-[#f7ce97]">{stat.value}</dd>
-                  <dt className="text-xs text-[#d2c4b6]">{stat.label}</dt>
-                </div>
+              <div
+                key={stat.label}
+                className={`flex flex-col gap-1 ${i > 0 ? 'border-s border-[#4e453b]/30 ps-6' : ''}`}
+              >
+                <dd className="text-lg font-bold text-[#f7ce97]">{stat.value}</dd>
+                <dt className="text-xs text-[#d2c4b6]">{stat.label}</dt>
               </div>
             ))}
           </dl>

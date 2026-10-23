@@ -37,7 +37,10 @@ export function toSlide(car: HeroCar): HeroSlide {
         : firstImage
           ? 'the photo has no url'
           : 'the car has no photos'
-    console.warn(`[hero] "${title}" has no usable image: ${why}. images =`, JSON.stringify(car.images))
+    console.warn(
+      `[hero] "${title}" has no usable image: ${why}. images =`,
+      JSON.stringify(car.images),
+    )
   }
   const score = car.inspection?.score
   const guaranteeDays = car.inspection?.returnGuaranteeDays
@@ -45,10 +48,18 @@ export function toSlide(car: HeroCar): HeroSlide {
   // Each metric only appears if there is real data behind it
   const metrics: HeroSlide['metrics'] = []
   if (car.specs?.acceleration) {
-    metrics.push({ icon: 'speed', label: 'شتاب صفر تا ۱۰۰', value: `${fa.format(car.specs.acceleration)} ثانیه` })
+    metrics.push({
+      icon: 'speed',
+      label: 'شتاب صفر تا ۱۰۰',
+      value: `${fa.format(car.specs.acceleration)} ثانیه`,
+    })
   }
   if (car.specs?.horsepower) {
-    metrics.push({ icon: 'power', label: 'حداکثر توان خروجی', value: `${fa.format(car.specs.horsepower)} اسب بخار` })
+    metrics.push({
+      icon: 'power',
+      label: 'حداکثر توان خروجی',
+      value: `${fa.format(car.specs.horsepower)} اسب بخار`,
+    })
   }
   metrics.push({
     icon: 'mileage',
@@ -58,7 +69,12 @@ export function toSlide(car: HeroCar): HeroSlide {
   metrics.push({
     icon: 'verified',
     label: 'برگه کارشناسی رسمی',
-    value: car.inspectionGrade === 'a-plus' ? 'تاییدیه سلامت کامل' : score != null ? `${fa.format(score)} از ۱۰۰` : 'تایید شده شوروم',
+    value:
+      car.inspectionGrade === 'a-plus'
+        ? 'تاییدیه سلامت کامل'
+        : score != null
+          ? `${fa.format(score)} از ۱۰۰`
+          : 'تایید شده شوروم',
   })
 
   return {
@@ -67,12 +83,15 @@ export function toSlide(car: HeroCar): HeroSlide {
     title,
     subtitle: `${brand?.name ?? ''} • ${car.year}`.replace(/^ • /, ''),
     description: car.description ? car.description.slice(0, 140) : null,
-    imageUrl: image?.url ?? null,
+    imageUrl: image?.sizes?.hero?.url ?? image?.url ?? null,
     imageAlt: image?.alt || title,
     priceText: toPersianPrice(car.price),
     tourUrl: car.tour360Url ?? null,
     badge: car.isFeatured ? 'خودروی ویژه هفته' : 'پیشنهاد ویژه شوروم',
-    chips: ['تحویل فوری شوروم', ...(guaranteeDays ? [`ضمانت بازگشت ${fa.format(guaranteeDays)} روزه`] : [])],
+    chips: [
+      'تحویل فوری شوروم',
+      ...(guaranteeDays ? [`ضمانت بازگشت ${fa.format(guaranteeDays)} روزه`] : []),
+    ],
     metrics,
   }
 }
