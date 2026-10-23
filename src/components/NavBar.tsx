@@ -24,11 +24,11 @@ const NavBar = () => {
           </ul>
         </div>
         <div className="flex gap-5">
-          <div className="border rounded-xl border-border bg-[#151a20] flex gap-2 items-center px-2 min-h-full text-[#c7baad] text-">
+          {/* <div className="border rounded-xl border-border bg-[#151a20] flex gap-2 items-center px-2 min-h-full text-[#c7baad] text-">
             <Phone className="text-primary" size={20} />
             {toPersianNumbers(0)}
             {toPersianNumbers(9193463658)}
-          </div>
+          </div> */}
           <BookingButton>
             <span className="inline-flex min-h-11 items-center justify-center rounded-xl bg-[#f7ce97] px-4 py-2 font-medium text-[#432c03] transition-colors hover:bg-[#deb278]">
               درخواست نوبت بازدید
