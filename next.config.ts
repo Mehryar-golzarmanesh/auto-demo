@@ -10,9 +10,24 @@ const nextConfig: NextConfig = {
   images: {
     localPatterns: [
       {
-        pathname: '/api/media/file/**',
+        pathname: '**',
       },
     ],
+    remotePatterns: [
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '3000',
+        pathname: '/media/**',
+      },
+      // If you have a staging/production domain, add it here too:
+      // {
+      //   protocol: 'https',
+      //   hostname: 'yourproductiondomain.com',
+      //   pathname: '/api/media/file/**',
+      // },
+    ],
+    unoptimized: true,
   },
   webpack: (webpackConfig) => {
     webpackConfig.resolve.extensionAlias = {

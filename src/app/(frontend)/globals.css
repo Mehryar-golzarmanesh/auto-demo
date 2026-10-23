@@ -1,5 +1,45 @@
-:root {
-  --font-mono: 'Roboto Mono', monospace;
+@import 'tailwindcss';
+
+@theme {
+  --font-sans: 'Demo Font', system-ui, sans-serif;
+  --color-primary: #d9b37e;
+  --color-gold: #f7ce97;
+  --color-primary-muted: #c4b7ab;
+  --color-secondary: #9ca3af;
+  --color-tertiary: #c59b63;
+  --color-neutral: #0d1117;
+  --color-border: #2c2b2b;
+}
+
+@font-face {
+  font-family: 'Demo Font';
+  src: url('/fonts/Vazirmatn-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-088E, U+FB50-FDFF, U+FE70-FEFF;
+}
+
+@font-face {
+  font-family: 'Demo Font';
+  src: url('/fonts/Vazirmatn-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-display: swap;
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-088E, U+FB50-FDFF, U+FE70-FEFF;
+}
+
+@font-face {
+  font-family: 'Demo Font';
+  src: url('/fonts/SpaceGrotesk-Bold.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+  unicode-range: U+0030-0039;
+}
+@font-face {
+  font-family: 'Demo Font';
+  src: url('/fonts/SpaceGrotesk-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-display: swap;
+  unicode-range: U+0030-0039;
 }
 
 * {
@@ -60,28 +100,6 @@ h1 {
   @media (max-width: 400px) {
     font-size: 32px;
     line-height: 32px;
-  }
-}
-
-p {
-  margin: 24px 0;
-
-  @media (max-width: 1024px) {
-    margin: calc(var(--base) * 0.75) 0;
-  }
-}
-
-a {
-  color: currentColor;
-
-  &:focus {
-    opacity: 0.8;
-    outline: none;
-  }
-
-  &:active {
-    opacity: 0.7;
-    outline: none;
   }
 }
 
@@ -161,4 +179,18 @@ svg {
       border-radius: 4px;
     }
   }
+}
+
+.embla__viewport {
+  overflow: hidden;
+}
+
+.embla__container {
+  display: flex;
+  touch-action: pan-y pinch-zoom; /* Allows vertical scroll on mobile */
+}
+
+.embla__slide {
+  flex: 0 0 100%; /* Each slide takes full width by default */
+  min-width: 0; /* Prevents content from breaking layout */
 }

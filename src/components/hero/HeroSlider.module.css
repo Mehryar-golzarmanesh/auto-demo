@@ -1,0 +1,22 @@
+/* The progress bar inside the active dot. When it finishes filling, the slider moves to the next car. */
+@keyframes fill {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.bar {
+  transform-origin: right; /* the site is right-to-left, so it fills from the right */
+  animation: fill var(--duration, 6000ms) linear forwards;
+}
+
+/* People who asked their device for less motion get no autoplay at all */
+@media (prefers-reduced-motion: reduce) {
+  .bar {
+    animation: none;
+    transform: scaleX(1);
+  }
+}

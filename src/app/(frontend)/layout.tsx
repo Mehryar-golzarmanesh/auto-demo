@@ -1,18 +1,29 @@
 import React from 'react'
-import './styles.css'
+import './globals.css'
+import { Metadata } from 'next'
+import { Vazirmatn } from 'next/font/google'
+import NavBar from '@/components/NavBar'
+import Footer from '@/components/Footer'
 
-export const metadata = {
-  description: 'A blank template using Payload in a Next.js app.',
-  title: 'Payload Blank Template',
+const vazirmatn = Vazirmatn({
+  subsets: ['arabic'],
+  weight: ['200', '400', '800'],
+})
+
+export const metadata: Metadata = {
+  description: 'دموی سایت فروش ماشین توسط مهریار گلزامنش',
+  title: 'Auto Demo',
 }
 
 export default async function RootLayout(props: { children: React.ReactNode }) {
   const { children } = props
 
   return (
-    <html lang="en">
-      <body>
-        <main>{children}</main>
+    <html lang="fa" dir="rtl">
+      <body className={`${vazirmatn.className} antialiased`}>
+        <NavBar />
+        <main className=" bg-[#0a0e14]">{children}</main>
+        <Footer />
       </body>
     </html>
   )

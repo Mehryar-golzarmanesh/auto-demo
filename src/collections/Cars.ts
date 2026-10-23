@@ -1,5 +1,11 @@
 import { CollectionConfig } from 'payload'
+import { carDetailFields } from './car-detail-fields'
+import { carFilterFields } from './car-filter-fields'
 
+// This is your original Cars collection plus:
+//  - `index: true` on price, year and isAvailable (faster filtering and sorting)
+//  - a `caption` field on every gallery image (the labels under the thumbnails)
+//  - the filter fields (bodyType, origin, isLuxury, ...) and the detail page fields (specs, options, inspection, ...)
 export const Cars: CollectionConfig = {
   slug: 'cars',
   admin: {
@@ -7,9 +13,10 @@ export const Cars: CollectionConfig = {
   },
   fields: [
     { name: 'brand', type: 'relationship', relationTo: 'brands', required: true, label: 'برند' },
+    { name: 'slug', type: 'text', required: true, unique: true, label: 'آدرس' },
     { name: 'model', type: 'text', required: true, label: 'مدل' },
-    { name: 'year', type: 'number', required: true, label: 'سال' },
-    { name: 'price', type: 'number', required: true, label: 'قیمت (تومان)' },
+    { name: 'year', type: 'number', required: true, index: true, label: 'سال' },
+    { name: 'price', type: 'number', required: true, index: true, label: 'قیمت (تومان)' },
     { name: 'mileage', type: 'number', defaultValue: 0, label: 'کارکرد' },
     {
       name: 'transmission',
@@ -37,10 +44,15 @@ export const Cars: CollectionConfig = {
       name: 'images',
       type: 'array',
       label: 'تصاویر',
-      fields: [{ name: 'image', type: 'upload', relationTo: 'media', required: true }],
+      fields: [
+        { name: 'image', type: 'upload', relationTo: 'media', required: true },
+        { name: 'caption', type: 'text', label: 'برچسب تصویر (مثلاً: روبرو)' },
+      ],
     },
     { name: 'isFeatured', type: 'checkbox', defaultValue: false, label: 'ویژه' },
-    { name: 'isAvailable', type: 'checkbox', defaultValue: true, label: 'موجود' },
+    { name: 'isAvailable', type: 'checkbox', defaultValue: true, index: true, label: 'موجود' },
+    ...carFilterFields,
+    ...carDetailFields,
   ],
   access: {
     create: ({ req: { user } }) =>

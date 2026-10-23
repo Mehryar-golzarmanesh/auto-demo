@@ -72,6 +72,7 @@ export interface Config {
     brands: Brand;
     cars: Car;
     inquiries: Inquiry;
+    'test-drives': TestDrive;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -84,6 +85,7 @@ export interface Config {
     brands: BrandsSelect<false> | BrandsSelect<true>;
     cars: CarsSelect<false> | CarsSelect<true>;
     inquiries: InquiriesSelect<false> | InquiriesSelect<true>;
+    'test-drives': TestDrivesSelect<false> | TestDrivesSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -218,6 +220,7 @@ export interface Brand {
 export interface Car {
   id: number;
   brand: number | Brand;
+  slug: string;
   model: string;
   year: number;
   price: number;
@@ -229,11 +232,50 @@ export interface Car {
   images?:
     | {
         image: number | Media;
+        caption?: string | null;
         id?: string | null;
       }[]
     | null;
   isFeatured?: boolean | null;
   isAvailable?: boolean | null;
+  bodyType?: ('sedan' | 'suv' | 'hatchback' | 'coupe') | null;
+  origin?: ('imported' | 'domestic') | null;
+  isLuxury?: boolean | null;
+  inspectionGrade?: ('a-plus' | 'a' | 'b') | null;
+  hasWarranty?: boolean | null;
+  installmentAvailable?: boolean | null;
+  specs?: {
+    engine?: string | null;
+    horsepower?: number | null;
+    torque?: string | null;
+    gearbox?: string | null;
+    drivetrain?: string | null;
+    acceleration?: number | null;
+    topSpeed?: number | null;
+    interiorColor?: string | null;
+    vin?: string | null;
+  };
+  options?:
+    | {
+        name: string;
+        id?: string | null;
+      }[]
+    | null;
+  inspection?: {
+    score?: number | null;
+    findings?:
+      | {
+          title: string;
+          result: string;
+          note?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+    inspector?: string | null;
+    returnGuaranteeDays?: number | null;
+    pdf?: (number | null) | Media;
+  };
+  tour360Url?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -251,6 +293,23 @@ export interface Inquiry {
   preferredDate?: string | null;
   message?: string | null;
   status?: ('new' | 'contacted' | 'closed') | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "test-drives".
+ */
+export interface TestDrive {
+  id: number;
+  name: string;
+  phone: string;
+  car: number | Car;
+  status?: ('new' | 'contacted' | 'completed' | 'cancelled') | null;
+  preferredDate?: string | null;
+  preferredTime?: string | null;
+  wantsCall?: boolean | null;
+  internalNote?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -297,6 +356,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'inquiries';
         value: number | Inquiry;
+      } | null)
+    | ({
+        relationTo: 'test-drives';
+        value: number | TestDrive;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -437,6 +500,7 @@ export interface BrandsSelect<T extends boolean = true> {
  */
 export interface CarsSelect<T extends boolean = true> {
   brand?: T;
+  slug?: T;
   model?: T;
   year?: T;
   price?: T;
@@ -449,10 +513,53 @@ export interface CarsSelect<T extends boolean = true> {
     | T
     | {
         image?: T;
+        caption?: T;
         id?: T;
       };
   isFeatured?: T;
   isAvailable?: T;
+  bodyType?: T;
+  origin?: T;
+  isLuxury?: T;
+  inspectionGrade?: T;
+  hasWarranty?: T;
+  installmentAvailable?: T;
+  specs?:
+    | T
+    | {
+        engine?: T;
+        horsepower?: T;
+        torque?: T;
+        gearbox?: T;
+        drivetrain?: T;
+        acceleration?: T;
+        topSpeed?: T;
+        interiorColor?: T;
+        vin?: T;
+      };
+  options?:
+    | T
+    | {
+        name?: T;
+        id?: T;
+      };
+  inspection?:
+    | T
+    | {
+        score?: T;
+        findings?:
+          | T
+          | {
+              title?: T;
+              result?: T;
+              note?: T;
+              id?: T;
+            };
+        inspector?: T;
+        returnGuaranteeDays?: T;
+        pdf?: T;
+      };
+  tour360Url?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -469,6 +576,22 @@ export interface InquiriesSelect<T extends boolean = true> {
   preferredDate?: T;
   message?: T;
   status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "test-drives_select".
+ */
+export interface TestDrivesSelect<T extends boolean = true> {
+  name?: T;
+  phone?: T;
+  car?: T;
+  status?: T;
+  preferredDate?: T;
+  preferredTime?: T;
+  wantsCall?: T;
+  internalNote?: T;
   updatedAt?: T;
   createdAt?: T;
 }

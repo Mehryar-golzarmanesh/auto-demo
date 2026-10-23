@@ -1,0 +1,21 @@
+/* A slim scrollbar in the site's colours. Used on the sidebar and on the brand list. */
+.thin {
+  scrollbar-width: thin; /* Firefox and modern Chrome / Edge / Safari */
+  scrollbar-color: #4e453b transparent; /* thumb colour, track colour */
+}
+
+/* Fallback for older Safari / Chrome versions */
+.thin::-webkit-scrollbar {
+  width: 6px;
+}
+.thin::-webkit-scrollbar-track {
+  background: transparent;
+  margin-block: 10px;
+}
+.thin::-webkit-scrollbar-thumb {
+  background: #4e453b;
+  border-radius: 9999px;
+}
+.thin::-webkit-scrollbar-thumb:hover {
+  background: #f7ce97;
+}
