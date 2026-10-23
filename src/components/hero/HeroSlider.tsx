@@ -49,7 +49,11 @@ export default function HeroSlider({ slides }: { slides: HeroSlide[] }) {
   // Load the NEXT slide's image ahead of time, so the crossfade never shows an empty frame.
   // Slides nobody has reached yet cost nothing.
   useEffect(() => {
-    setSeen((s) => (s.includes(index) ? s : [...s, index]))
+    setSeen((s) => {
+      const want = [index, (index + 1) % count]
+      const merged = [...new Set([...s, ...want])]
+      return merged.length === s.length ? s : merged
+    })
   }, [index, count])
 
   return (
@@ -59,9 +63,9 @@ export default function HeroSlider({ slides }: { slides: HeroSlide[] }) {
       aria-label="خودروهای ویژه شوروم"
       aria-live={playing ? 'off' : 'polite'}
       className="relative touch-pan-y overflow-hidden rounded-3xl border border-[#4e453b]/30 bg-gradient-to-b from-[#262a31]/60 via-[#181c22]/40 to-[#0a0e14] p-4 shadow-[0_20px_60px_rgba(0,0,0,0.8)] sm:p-6 lg:p-8"
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      onFocus={() => setHovered(true)}
+      onPointerEnter={(e) => e.pointerType === 'mouse' && setHovered(true)}
+      onPointerLeave={(e) => e.pointerType === 'mouse' && setHovered(false)}
+      onFocus={(e) => e.target.matches(':focus-visible') && setHovered(true)}
       onBlur={() => setHovered(false)}
       // In a right-to-left page the arrow on the LEFT means "next"
       onKeyDown={(e) => {
@@ -92,7 +96,7 @@ export default function HeroSlider({ slides }: { slides: HeroSlide[] }) {
       }}
     >
       {/* All slides sit in the same grid cell and crossfade. The cell is as tall as the tallest slide, so nothing jumps. */}
-      <div className="grid">
+      <div className="grid grid-cols-[minmax(0,1fr)]">
         {slides.map((slide, i) => {
           const active = i === index
           const href = `/cars/${slide.slug}`
@@ -105,20 +109,23 @@ export default function HeroSlider({ slides }: { slides: HeroSlide[] }) {
               aria-label={`${fa.format(i + 1)} از ${fa.format(count)}`}
               inert={!active}
               className={cn(
-                'col-start-1 row-start-1 transition-opacity duration-700 motion-reduce:transition-none',
+                'col-start-1 row-start-1 min-w-0 transition-opacity duration-700 motion-reduce:transition-none',
                 active ? 'opacity-100' : 'pointer-events-none opacity-0',
               )}
             >
               {/* Top ribbon */}
-              <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-                <div className="flex flex-wrap items-center gap-3">
+              <div className="mb-4 flex min-w-0 flex-wrap items-center justify-between gap-3">
+                <div className="flex min-w-0 flex-wrap items-center gap-3">
                   <span className="flex items-center gap-1.5 rounded-lg bg-[#f7ce97] px-3 py-1 text-xs font-bold text-[#432c03]">
                     <StarIcon size={14} aria-hidden /> {slide.badge}
                   </span>
-                  {slide.chips.map((chip) => (
+                  {slide.chips.map((chip, ci) => (
                     <span
                       key={chip}
-                      className="rounded-lg border border-[#4e453b]/30 bg-[#0a0e14]/80 px-3 py-1 text-[11px] text-[#d2c4b6]"
+                      className={cn(
+                        'rounded-lg border border-[#4e453b]/30 bg-[#0a0e14]/80 px-3 py-1 text-[11px] text-[#d2c4b6]',
+                        ci > 0 && 'hidden sm:inline-block',
+                      )}
                     >
                       {chip}
                     </span>
@@ -137,64 +144,63 @@ export default function HeroSlider({ slides }: { slides: HeroSlide[] }) {
               </div>
 
               {/* Image with text on top */}
-              <div className="relative aspect-[16/9] w-full overflow-hidden rounded-2xl bg-[#0a0e14] shadow-2xl sm:aspect-[21/9]">
-                {slide.imageUrl && seen.includes(i) ? (
-                  <Image
-                    src={slide.imageUrl}
-                    alt={slide.imageAlt}
-                    fill
-                    priority={i === 0} // the first slide is the biggest thing on the page: load it first
-                    sizes="(min-width: 1536px) 1280px, (min-width: 1024px) calc(100vw - 6rem), calc(100vw - 2.5rem)"
-                    className="object-cover"
+              {/* Image + text. Below md the text sits UNDER the photo; from md up it overlays it. */}
+              <div className="relative overflow-hidden rounded-2xl bg-[#0a0e14] shadow-2xl md:aspect-[21/9]">
+                <div className="relative aspect-[16/10] w-full md:absolute md:inset-0 md:aspect-auto">
+                  {slide.imageUrl && seen.includes(i) ? (
+                    <Image
+                      src={slide.imageUrl}
+                      alt={slide.imageAlt}
+                      fill
+                      priority={i === 0}
+                      sizes="(min-width: 1536px) 1280px, (min-width: 1024px) calc(100vw - 6rem), calc(100vw - 2.5rem)"
+                      className="object-cover"
+                    />
+                  ) : (
+                    !slide.imageUrl && (
+                      <div className="absolute inset-0 flex items-center justify-center text-sm text-[#d2c4b6]/60">
+                        تصویری ثبت نشده
+                      </div>
+                    )
+                  )}
+                  <Link href={href} aria-hidden tabIndex={-1} className="absolute inset-0 z-10" />
+                  <div
+                    aria-hidden
+                    className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#0a0e14] via-transparent to-transparent md:via-[#0a0e14]/30"
                   />
-                ) : (
-                  !slide.imageUrl && (
-                    <div className="absolute inset-0 flex items-center justify-center text-sm text-[#d2c4b6]/60">
-                      تصویری ثبت نشده
-                    </div>
-                  )
-                )}
+                  <div
+                    aria-hidden
+                    className="pointer-events-none absolute inset-0 hidden bg-gradient-to-r from-[#0a0e14]/70 via-transparent to-[#0a0e14]/70 md:block"
+                  />
+                </div>
 
-                {/* The picture is clickable too. This empty link sits above it; keyboards and screen readers use the title link. */}
-                <Link href={href} aria-hidden tabIndex={-1} className="absolute inset-0 z-10" />
-
-                {/* Solid gradients keep the text readable. (No blur effects: they are costly on weaker phones.) */}
-                <div
-                  aria-hidden
-                  className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#0a0e14] via-[#0a0e14]/30 to-transparent"
-                />
-                <div
-                  aria-hidden
-                  className="pointer-events-none absolute inset-0 hidden bg-gradient-to-r from-[#0a0e14]/70 via-transparent to-[#0a0e14]/70 sm:block"
-                />
-
-                <div className="pointer-events-none absolute inset-x-4 bottom-4 z-20 flex flex-col justify-between gap-4 sm:inset-x-6 sm:bottom-6 md:flex-row md:items-end">
-                  <div className="flex max-w-xl flex-col">
-                    <span className="mb-1.5 text-xs font-bold tracking-widest text-[#f7ce97]">
+                <div className="pointer-events-none relative z-20 flex min-w-0 flex-col gap-4 p-4 pt-3 md:absolute md:inset-x-6 md:bottom-6 md:flex-row md:items-end md:justify-between md:p-0">
+                  <div className="flex min-w-0 max-w-xl flex-col">
+                    <span className="mb-1 text-xs font-bold tracking-widest text-[#f7ce97]">
                       {slide.subtitle}
                     </span>
-                    <h2 className="text-[24px] font-bold text-[#dfe2eb] drop-shadow-md sm:text-[34px] lg:text-[40px]">
-                      <Link
-                        href={href}
-                        className="pointer-events-auto hover:text-[#f7ce97] leading-10"
-                      >
+                    <h2 className="break-words text-[22px] font-bold leading-snug text-[#dfe2eb] drop-shadow-md sm:text-[28px] lg:text-[40px]">
+                      <Link href={href} className="pointer-events-auto hover:text-[#f7ce97]">
                         {slide.title}
                       </Link>
                     </h2>
                     {slide.description && (
-                      <p className="mt-1 hidden text-sm leading-7 text-[#d2c4b6] drop-shadow sm:block sm:text-base">
+                      <p
+                        dir="rtl"
+                        className="mt-1 line-clamp-2 break-words text-sm leading-7 text-[#d2c4b6] md:line-clamp-none md:text-base"
+                      >
                         {slide.description}
                       </p>
                     )}
                   </div>
 
-                  <div className="pointer-events-auto flex shrink-0 flex-row items-center justify-between gap-4 rounded-2xl border border-[#4e453b]/30 bg-[#0a0e14]/85 p-3.5 shadow-2xl sm:p-4 md:flex-col md:items-start">
-                    <div>
+                  <div className="pointer-events-auto flex w-full min-w-0 flex-col gap-3 rounded-2xl border border-[#4e453b]/30 bg-[#0a0e14]/85 p-3.5 md:w-auto md:shrink-0 md:items-start md:p-4">
+                    <div className="min-w-0">
                       <span className="text-[11px] text-[#d2c4b6]">
                         قیمت کارشناسی و رسمی شوروم:
                       </span>
-                      <p className="mt-0.5 flex items-baseline gap-1">
-                        <span className="text-[22px] font-bold text-[#f7ce97] sm:text-[28px]">
+                      <p className="mt-0.5 flex flex-wrap items-baseline gap-x-1">
+                        <span className="break-words text-xl font-bold text-[#f7ce97] sm:text-[28px]">
                           {slide.priceText}
                         </span>
                         <span className="text-xs text-[#d2c4b6]">تومان</span>
@@ -202,7 +208,7 @@ export default function HeroSlider({ slides }: { slides: HeroSlide[] }) {
                     </div>
                     <Link
                       href={href}
-                      className="flex items-center gap-1.5 rounded-lg bg-[#f7ce97] px-3.5 py-2 text-xs font-bold text-[#432c03] transition-colors hover:bg-[#fccd91]"
+                      className="flex w-full items-center justify-center gap-1.5 rounded-lg bg-[#f7ce97] px-3.5 py-2.5 text-xs font-bold text-[#432c03] transition-colors hover:bg-[#fccd91] md:w-auto"
                     >
                       مشاهده مشخصات <ArrowLeftIcon size={14} aria-hidden />
                     </Link>
@@ -217,7 +223,7 @@ export default function HeroSlider({ slides }: { slides: HeroSlide[] }) {
                   return (
                     <li
                       key={metric.label}
-                      className="grid grid-cols-[auto_1fr] grid-rows-[auto_auto] items-center gap-x-3 rounded-xl border border-[#4e453b]/20 bg-[#0a0e14]/60 p-3"
+                      className="grid grid-cols-[auto_1fr] grid-rows-[auto_auto] items-center gap-x-2 rounded-xl border border-[#4e453b]/20 bg-[#0a0e14]/60 p-2.5 sm:gap-x-3 sm:p-3"
                     >
                       <Icon size={24} className="row-span-2 text-[#f7ce97]" aria-hidden />
                       <span className="text-[11px] text-[#d2c4b6]">{metric.label}</span>
@@ -233,13 +239,13 @@ export default function HeroSlider({ slides }: { slides: HeroSlide[] }) {
 
       {/* Controls: previous, dots with progress, next, play / pause */}
       {count > 1 && (
-        <div className="mt-5 flex items-center justify-between gap-3">
-          <div className="flex items-center gap-2">
+        <div className="mt-5 flex min-w-0 items-center justify-between gap-2 sm:gap-3">
+          <div className="flex shrink-0 items-center gap-2">
             <button
               type="button"
               onClick={prev}
               aria-label="خودروی قبلی"
-              className="rounded-full bg-[#262a31] p-2 text-[#dfe2eb] transition-colors hover:bg-[#f7ce97] hover:text-[#432c03]"
+              className="shrink-0 rounded-full bg-[#262a31] p-2 text-[#dfe2eb] transition-colors hover:bg-[#f7ce97] hover:text-[#432c03]"
             >
               <ChevronRightIcon size={20} />
             </button>
@@ -247,13 +253,13 @@ export default function HeroSlider({ slides }: { slides: HeroSlide[] }) {
               type="button"
               onClick={next}
               aria-label="خودروی بعدی"
-              className="rounded-full bg-[#262a31] p-2 text-[#dfe2eb] transition-colors hover:bg-[#f7ce97] hover:text-[#432c03]"
+              className="shrink-0 rounded-full bg-[#262a31] p-2 text-[#dfe2eb] transition-colors hover:bg-[#f7ce97] hover:text-[#432c03]"
             >
               <ChevronLeftIcon size={20} />
             </button>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex min-w-0 items-center gap-1.5 sm:gap-2">
             {slides.map((slide, i) => (
               <button
                 key={slide.id}
@@ -262,13 +268,14 @@ export default function HeroSlider({ slides }: { slides: HeroSlide[] }) {
                 aria-label={`نمایش ${slide.title}`}
                 aria-current={i === index}
                 className={cn(
-                  'relative h-1.5 overflow-hidden rounded-full transition-all duration-300',
-                  i === index ? 'w-14 bg-[#4e453b]' : 'w-6 bg-[#4e453b] hover:bg-[#d2c4b6]',
+                  'relative h-1.5 shrink-0 overflow-hidden rounded-full transition-all duration-300',
+                  i === index
+                    ? 'w-10 bg-[#4e453b] sm:w-14'
+                    : 'w-4 bg-[#4e453b] hover:bg-[#d2c4b6] sm:w-6',
                 )}
               >
                 {i === index &&
                   (playing ? (
-                    // When this bar finishes filling, move to the next car. Pausing = pausing the animation.
                     <span
                       key={index}
                       className={cn(styles.bar, 'absolute inset-0 bg-[#f7ce97]')}
@@ -289,7 +296,7 @@ export default function HeroSlider({ slides }: { slides: HeroSlide[] }) {
             type="button"
             onClick={() => setPlaying((p) => !p)}
             aria-label={playing ? 'توقف نمایش خودکار' : 'شروع نمایش خودکار'}
-            className="rounded-full bg-[#262a31] p-2 text-[#dfe2eb] transition-colors hover:bg-[#f7ce97] hover:text-[#432c03]"
+            className="shrink-0 rounded-full bg-[#262a31] p-2 text-[#dfe2eb] transition-colors hover:bg-[#f7ce97] hover:text-[#432c03]"
           >
             {playing ? <PauseIcon size={20} /> : <PlayIcon size={20} />}
           </button>
