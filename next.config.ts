@@ -20,12 +20,11 @@ const nextConfig: NextConfig = {
         port: '3000',
         pathname: '/media/**',
       },
-      // If you have a staging/production domain, add it here too:
-      // {
-      //   protocol: 'https',
-      //   hostname: 'yourproductiondomain.com',
-      //   pathname: '/api/media/file/**',
-      // },
+      {
+        protocol: 'https',
+        hostname: 'auto-demo-delta.vercel.app/',
+        pathname: '/api/media/file/**',
+      },
     ],
     unoptimized: true,
   },
